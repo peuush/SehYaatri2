@@ -1,0 +1,40 @@
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": { "en": "Ranchi - Rock Garden & Hundru Falls", "hi": "रांची - रॉक गार्डन और हुंड्रू फॉल्स" },
+      "region": { "en": "Central", "hi": "मध्य" },
+      "tags": ["waterfall", "city"],
+      "days": 1,
+      "lat": 23.3441,
+      "lng": 85.3096,
+      "short": {
+        "en": "Scenic city escapes, waterfalls & rocky gardens.",
+        "hi": "झरनों और सुंदर उद्यानों के साथ शहर का अद्भुत दृश्य।"
+      }
+    },
+    {
+      "id": 2,
+      "name": { "en": "Netarhat - Sunset Point", "hi": "नेतरहाट - सनसेट प्वाइंट" },
+      "region": { "en": "North", "hi": "उत्तर" },
+      "tags": ["hill", "trekking"],
+      "days": 2,
+      "lat": 23.4694,
+      "lng": 84.2667,
+      "short": {
+        "en": "A peaceful hill station with panoramic views.",
+        "hi": "शांत हिल स्टेशन जहाँ से शानदार नज़ारे दिखाई देते हैं।"
+      }
+    }
+  ],
+  "culture": [
+    {
+      "id": "c1",
+      "title": { "en": "Tribal Traditions", "hi": "आदिवासी परंपराएँ" },
+      "desc": {
+        "en": "Jharkhand's tribal communities keep rich music, dance, and craft traditions alive.",
+        "hi": "झारखंड की आदिवासी जनजातियाँ संगीत, नृत्य और शिल्प परंपराओं को जीवित रखती हैं।"
+      }
+    }
+  ]
+}

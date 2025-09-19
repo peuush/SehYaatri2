@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #effef6;
+  --color-brand-100: #d9fde9;
+  --color-brand-200: #b5f9d3;
+  --color-brand-300: #7ff3b4;
+  --color-brand-400: #3ee689;
+  --color-brand-500: #16c172;
+  --color-brand-600: #0d985d;
+  --color-brand-700: #0b774d;
+  --color-brand-800: #0c5f40;
+  --color-brand-900: #0c4e35;
+}
+
+/* Dark mode configuration for Tailwind v4 */
+@variant dark (.dark &);
+
+/* Base tokens and resets */
+:root {
+  --bg: 247 247 247;
+  --fg: 17 24 39;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: rgb(var(--fg));
+  background: rgb(var(--bg));
+}
