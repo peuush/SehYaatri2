@@ -4,7 +4,7 @@
       "id": 1,
       "name": { "en": "Ranchi - Rock Garden & Hundru Falls", "hi": "रांची - रॉक गार्डन और हुंड्रू फॉल्स" },
       "region": { "en": "Central", "hi": "मध्य" },
-      "tags": ["waterfall", "city"],
+      "tags": ["nature", "waterfall", "city"],
       "days": 1,
       "lat": 23.3441,
       "lng": 85.3096,
@@ -17,13 +17,117 @@
       "id": 2,
       "name": { "en": "Netarhat - Sunset Point", "hi": "नेतरहाट - सनसेट प्वाइंट" },
       "region": { "en": "North", "hi": "उत्तर" },
-      "tags": ["hill", "trekking"],
+      "tags": ["nature", "hill", "trekking"],
       "days": 2,
       "lat": 23.4694,
       "lng": 84.2667,
       "short": {
         "en": "A peaceful hill station with panoramic views.",
         "hi": "शांत हिल स्टेशन जहाँ से शानदार नज़ारे दिखाई देते हैं।"
+      }
+    },
+    {
+      "id": 3,
+      "name": { "en": "Dassam Falls", "hi": "दसम जलप्रपात" },
+      "region": { "en": "Ranchi", "hi": "रांची" },
+      "tags": ["nature", "waterfall"],
+      "days": 1,
+      "lat": 23.2569,
+      "lng": 85.5296,
+      "short": {
+        "en": "Spectacular waterfall near Ranchi, best in monsoon.",
+        "hi": "रांची के पास शानदार जलप्रपात, मानसून में सबसे सुंदर।"
+      }
+    },
+    {
+      "id": 4,
+      "name": { "en": "Betla National Park", "hi": "बेतला राष्ट्रीय उद्यान" },
+      "region": { "en": "Palamu", "hi": "पलामू" },
+      "tags": ["nature", "wildlife", "forest"],
+      "days": 2,
+      "lat": 23.846,
+      "lng": 84.209,
+      "short": {
+        "en": "Tiger reserve with rich wildlife and forests.",
+        "hi": "समृद्ध वन्यजीव और जंगलों वाला टाइगर रिज़र्व।"
+      }
+    },
+    {
+      "id": 5,
+      "name": { "en": "Baidhyanath Dham", "hi": "बाबा बैद्यनाथ धाम" },
+      "region": { "en": "Deoghar", "hi": "देवघर" },
+      "tags": ["culture", "temple", "heritage", "religion"],
+      "days": 1,
+      "lat": 24.485,
+      "lng": 86.695,
+      "short": {
+        "en": "Famous Jyotirlinga temple and pilgrimage center.",
+        "hi": "प्रसिद्ध ज्योतिर्लिंग मंदिर और तीर्थ स्थल।"
+      }
+    },
+    {
+      "id": 6,
+      "name": { "en": "Hazaribagh Lake & National Park", "hi": "हजारीबाग झील व राष्ट्रीय उद्यान" },
+      "region": { "en": "Hazaribagh", "hi": "हजारीबाग" },
+      "tags": ["nature", "lake", "park", "boating"],
+      "days": 1,
+      "lat": 23.992,
+      "lng": 85.361,
+      "short": {
+        "en": "Serene lake, boating and nearby wildlife areas.",
+        "hi": "शांत झील, नौकायन और आसपास के वन्य क्षेत्र।"
+      }
+    },
+    {
+      "id": 7,
+      "name": { "en": "Patratu Valley", "hi": "पतरातू घाटी" },
+      "region": { "en": "Ramgarh", "hi": "रामगढ़" },
+      "tags": ["nature", "valley", "cycling"],
+      "days": 1,
+      "lat": 23.6907,
+      "lng": 85.2799,
+      "short": {
+        "en": "Winding roads with stunning valley views.",
+        "hi": "घुमावदार सड़कों से शानदार घाटी दृश्यों का आनंद।"
+      }
+    },
+    {
+      "id": 8,
+      "name": { "en": "Jonha Falls", "hi": "जोनहा फॉल्स" },
+      "region": { "en": "Ranchi", "hi": "रांची" },
+      "tags": ["nature", "waterfall"],
+      "days": 1,
+      "lat": 23.3586,
+      "lng": 85.5478,
+      "short": {
+        "en": "Picturesque hanging valley waterfall.",
+        "hi": "चित्रमय हैंगिंग वैली जलप्रपात।"
+      }
+    },
+    {
+      "id": 9,
+      "name": { "en": "Jubilee Park & Dimna Lake", "hi": "जुबली पार्क और डिमना झील" },
+      "region": { "en": "Jamshedpur", "hi": "जमशेदपुर" },
+      "tags": ["nature", "lake", "park", "boating"],
+      "days": 1,
+      "lat": 22.836,
+      "lng": 86.221,
+      "short": {
+        "en": "City park, gardens and a scenic lake getaway.",
+        "hi": "शहर का पार्क, बगीचे और सुंदर झील का सैर-स्थल।"
+      }
+    },
+    {
+      "id": 10,
+      "name": { "en": "Ranchi Street Food Walk", "hi": "रांची स्ट्रीट फूड वॉक" },
+      "region": { "en": "Ranchi", "hi": "रांची" },
+      "tags": ["food", "market", "street food"],
+      "days": 1,
+      "lat": 23.36,
+      "lng": 85.33,
+      "short": {
+        "en": "Taste litti-chokha, dhuska, and more local bites.",
+        "hi": "लिट्टी-चोखा, धुस्का और अन्य स्थानीय व्यंजनों का स्वाद लें।"
       }
     }
   ],
@@ -34,6 +138,22 @@
       "desc": {
         "en": "Jharkhand's tribal communities keep rich music, dance, and craft traditions alive.",
         "hi": "झारखंड की आदिवासी जनजातियाँ संगीत, नृत्य और शिल्प परंपराओं को जीवित रखती हैं।"
+      }
+    },
+    {
+      "id": "c2",
+      "title": { "en": "Chhau & Jhumar Dances", "hi": "छऊ और झूमर नृत्य" },
+      "desc": {
+        "en": "Vibrant folk dance forms performed during festivals across the state.",
+        "hi": "त्योहारों पर पूरे राज्य में प्रस्तुत किए जाने वाले जीवंत लोक नृत्य।"
+      }
+    },
+    {
+      "id": "c3",
+      "title": { "en": "Dokra & Bamboo Crafts", "hi": "ढोकरा और बांस शिल्प" },
+      "desc": {
+        "en": "Traditional metal casting and bamboo weaving from rural artisans.",
+        "hi": "ग्रामीण कारीगरों द्वारा पारंपरिक धातु ढलाई और बांस बुनाई।"
       }
     }
   ]

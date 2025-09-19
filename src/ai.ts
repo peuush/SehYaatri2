@@ -31,3 +31,13 @@ export async function askGemini(query: string, language: "en" | "hi"): Promise<s
 	const text = result.response.text().trim();
 	return text;
 }
+
+export async function submitFeedback(payload: unknown, email?: string): Promise<void> {
+    await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ payload, email })
+    }).then(async (r) => {
+        if (!r.ok) throw new Error(await r.text());
+    });
+}

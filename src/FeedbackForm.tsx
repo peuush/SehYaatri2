@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { submitFeedback } from "./ai";
 
 interface FeedbackFormProps {
-	language: "en" | "hi";
-	onClose: () => void;
+    language: "en" | "hi";
+    onClose: () => void;
+    inline?: boolean;
 }
 
 interface FeedbackData {
@@ -54,7 +56,7 @@ const initialFeedbackData: FeedbackData = {
 	contactEmail: "",
 };
 
-export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
+export default function FeedbackForm({ language, onClose, inline = false }: FeedbackFormProps) {
 	const [currentStep, setCurrentStep] = useState(1);
 	const [feedbackData, setFeedbackData] = useState<FeedbackData>(initialFeedbackData);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -184,13 +186,17 @@ export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
 		setFeedbackData(prev => ({ ...prev, [field]: value }));
 	};
 
-	const handleSubmit = async () => {
-		setIsSubmitting(true);
-		// Simulate API call
-		await new Promise(resolve => setTimeout(resolve, 2000));
-		setIsSubmitting(false);
-		setIsSubmitted(true);
-	};
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        try {
+            await submitFeedback(feedbackData, feedbackData.contactEmail || undefined);
+            setIsSubmitted(true);
+        } catch (e) {
+            alert(language === 'en' ? 'Failed to submit feedback' : 'प्रतिक्रिया भेजने में समस्या हुई');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
 	const renderStarRating = (value: number, onChange: (value: number) => void, label: string) => (
 		<div className="space-y-2">
@@ -231,40 +237,41 @@ export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
 		</div>
 	);
 
-	if (isSubmitted) {
-		return (
-			<div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-				<div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full text-center">
-					<div className="text-6xl mb-4">🎉</div>
-					<h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{t.thankYou}</h3>
-					<p className="text-slate-600 dark:text-slate-400 mb-6">{t.thankYouMessage}</p>
-					<button
-						onClick={onClose}
-						className="w-full bg-brand-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-brand-700 transition-colors"
-					>
-						{t.close}
-					</button>
-				</div>
-			</div>
-		);
-	}
+    if (isSubmitted) {
+        return inline ? (
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 w-full text-center ring-1 ring-slate-200 dark:ring-slate-700">
+                <div className="text-6xl mb-4">🎉</div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{t.thankYou}</h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-2">{t.thankYouMessage}</p>
+            </div>
+        ) : (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full text-center">
+                    <div className="text-6xl mb-4">🎉</div>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{t.thankYou}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-6">{t.thankYouMessage}</p>
+                    <button
+                        onClick={onClose}
+                        className="w-full bg-brand-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-brand-700 transition-colors"
+                    >
+                        {t.close}
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
-	return (
-		<div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-			<div className="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+    return inline ? (
+        <div className="w-full">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl w-full ring-1 ring-slate-200 dark:ring-slate-700 overflow-hidden">
 				{/* Header */}
-				<div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                <div className="p-6 border-b border-slate-200 dark:border-slate-700">
 					<div className="flex items-center justify-between">
 						<div>
 							<h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t.title}</h2>
 							<p className="text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
 						</div>
-						<button
-							onClick={onClose}
-							className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-2xl"
-						>
-							×
-						</button>
+                        <div />
 					</div>
 					<div className="mt-4 flex items-center gap-2">
 						<div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2">
@@ -280,7 +287,7 @@ export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
 				</div>
 
 				{/* Content */}
-				<div className="p-6 overflow-y-auto max-h-[60vh]">
+                <div className="p-6">
 					{currentStep === 1 && (
 						<div className="space-y-6">
 							<h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.websiteSection}</h3>
@@ -458,8 +465,8 @@ export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
 					)}
 				</div>
 
-				{/* Footer */}
-				<div className="p-6 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+                {/* Footer */}
+                <div className="p-6 border-t border-slate-200 dark:border-slate-700 flex justify-between">
 					<button
 						onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
 						disabled={currentStep === 1}
@@ -487,5 +494,243 @@ export default function FeedbackForm({ language, onClose }: FeedbackFormProps) {
 				</div>
 			</div>
 		</div>
-	);
+    ) : (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                {/* Header */}
+                <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t.title}</h2>
+                            <p className="text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
+                        </div>
+                        <button
+                            onClick={onClose}
+                            className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-2xl"
+                        >
+                            ×
+                        </button>
+                    </div>
+                    <div className="mt-4 flex items-center gap-2">
+                        <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                            <div
+                                className="bg-brand-600 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                            />
+                        </div>
+                        <span className="text-sm text-slate-500 dark:text-slate-400">
+                            {t.step} {currentStep} {t.of} {totalSteps}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 overflow-y-auto max-h-[60vh]">
+                    {currentStep === 1 && (
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.websiteSection}</h3>
+                            
+                            {renderStarRating(
+                                feedbackData.websiteRating,
+                                (value) => handleRatingChange('websiteRating', value),
+                                `${t.rating} *`
+                            )}
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {renderStarRating(
+                                    feedbackData.websiteEaseOfUse,
+                                    (value) => handleRatingChange('websiteEaseOfUse', value),
+                                    t.easeOfUse
+                                )}
+                                {renderStarRating(
+                                    feedbackData.websiteDesign,
+                                    (value) => handleRatingChange('websiteDesign', value),
+                                    t.design
+                                )}
+                                {renderStarRating(
+                                    feedbackData.websiteContent,
+                                    (value) => handleRatingChange('websiteContent', value),
+                                    t.content
+                                )}
+                                {renderStarRating(
+                                    feedbackData.websiteNavigation,
+                                    (value) => handleRatingChange('websiteNavigation', value),
+                                    t.navigation
+                                )}
+                            </div>
+
+                            {renderIssueCheckboxes(
+                                t.websiteIssues,
+                                feedbackData.websiteIssues,
+                                (issue) => handleIssueToggle('websiteIssues', issue)
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    {t.comments} ({t.optional})
+                                </label>
+                                <textarea
+                                    value={feedbackData.websiteComments}
+                                    onChange={(e) => handleTextChange('websiteComments', e.target.value)}
+                                    placeholder={language === 'en' ? 'Tell us more about your website experience...' : 'अपने वेबसाइट अनुभव के बारे में और बताएं...'}
+                                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    rows={3}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {currentStep === 2 && (
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.aiSection}</h3>
+                            
+                            {renderStarRating(
+                                feedbackData.aiRating,
+                                (value) => handleRatingChange('aiRating', value),
+                                `${t.rating} *`
+                            )}
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {renderStarRating(
+                                    feedbackData.aiAccuracy,
+                                    (value) => handleRatingChange('aiAccuracy', value),
+                                    t.accuracy
+                                )}
+                                {renderStarRating(
+                                    feedbackData.aiResponseTime,
+                                    (value) => handleRatingChange('aiResponseTime', value),
+                                    t.responseTime
+                                )}
+                                {renderStarRating(
+                                    feedbackData.aiHelpfulness,
+                                    (value) => handleRatingChange('aiHelpfulness', value),
+                                    t.helpfulness
+                                )}
+                                {renderStarRating(
+                                    feedbackData.aiLanguageSupport,
+                                    (value) => handleRatingChange('aiLanguageSupport', value),
+                                    t.languageSupport
+                                )}
+                            </div>
+
+                            {renderIssueCheckboxes(
+                                t.aiIssues,
+                                feedbackData.aiIssues,
+                                (issue) => handleIssueToggle('aiIssues', issue)
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    {t.comments} ({t.optional})
+                                </label>
+                                <textarea
+                                    value={feedbackData.aiComments}
+                                    onChange={(e) => handleTextChange('aiComments', e.target.value)}
+                                    placeholder={language === 'en' ? 'Tell us more about your AI chatbot experience...' : 'अपने AI चैटबॉट अनुभव के बारे में और बताएं...'}
+                                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    rows={3}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {currentStep === 3 && (
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.generalSection}</h3>
+                            
+                            {renderStarRating(
+                                feedbackData.overallExperience,
+                                (value) => handleRatingChange('overallExperience', value),
+                                `${t.overallExperience} *`
+                            )}
+
+                            {renderStarRating(
+                                feedbackData.recommendation,
+                                (value) => handleRatingChange('recommendation', value),
+                                `${t.recommendation} *`
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    {t.comments} ({t.optional})
+                                </label>
+                                <textarea
+                                    value={feedbackData.additionalComments}
+                                    onChange={(e) => handleTextChange('additionalComments', e.target.value)}
+                                    placeholder={language === 'en' ? 'Any additional feedback or suggestions...' : 'कोई अतिरिक्त प्रतिक्रिया या सुझाव...'}
+                                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    rows={4}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {currentStep === 4 && (
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{t.contactSection}</h3>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    {t.email} ({t.optional})
+                                </label>
+                                <input
+                                    type="email"
+                                    value={feedbackData.contactEmail}
+                                    onChange={(e) => handleTextChange('contactEmail', e.target.value)}
+                                    placeholder={t.emailPlaceholder}
+                                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                />
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    {language === 'en' 
+                                        ? 'We may contact you for follow-up questions about your feedback.'
+                                        : 'हम आपकी प्रतिक्रिया के बारे में अनुवर्ती प्रश्नों के लिए आपसे संपर्क कर सकते हैं।'
+                                    }
+                                </p>
+                            </div>
+
+                            <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
+                                <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-2">
+                                    {language === 'en' ? 'Feedback Summary' : 'प्रतिक्रिया सारांश'}
+                                </h4>
+                                <div className="text-sm text-slate-600 dark:text-slate-300 space-y-1">
+                                    <p>{t.websiteSection}: ⭐ {feedbackData.websiteRating}/5</p>
+                                    <p>{t.aiSection}: ⭐ {feedbackData.aiRating}/5</p>
+                                    <p>{t.overallExperience}: ⭐ {feedbackData.overallExperience}/5</p>
+                                    <p>{t.recommendation}: ⭐ {feedbackData.recommendation}/5</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Footer */}
+                <div className="p-6 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+                    <button
+                        onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
+                        disabled={currentStep === 1}
+                        className="px-4 py-2 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800"
+                    >
+                        {t.previous}
+                    </button>
+                    
+                    {currentStep < totalSteps ? (
+                        <button
+                            onClick={() => setCurrentStep(prev => Math.min(totalSteps, prev + 1))}
+                            className="px-6 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
+                        >
+                            {t.next}
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleSubmit}
+                            disabled={isSubmitting || feedbackData.websiteRating === 0 || feedbackData.aiRating === 0 || feedbackData.overallExperience === 0 || feedbackData.recommendation === 0}
+                            className="px-6 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isSubmitting ? t.submitting : t.submit}
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 }
